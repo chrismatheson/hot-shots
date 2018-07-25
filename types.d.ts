@@ -83,10 +83,10 @@ declare module "hot-shots" {
     timing(stat: string | string[], value: number, callback?: StatsCb): void;
     timing(stat: string | string[], value: number, sampleRate?: number, callback?: StatsCb): void;
 
-    timer(func: (...args: any[]) => any, stat: string | string[], value: number, sampleRate?: number, tags?: Tags, callback?: StatsCb): (...args: any[]) => any;
-    timer(func: (...args: any[]) => any, stat: string | string[], value: number, tags?: Tags, callback?: StatsCb): (...args: any[]) => any;
-    timer(func: (...args: any[]) => any, stat: string | string[], value: number, callback?: StatsCb): (...args: any[]) => any;
-    timer(func: (...args: any[]) => any, stat: string | string[], value: number, sampleRate?: number, callback?: StatsCb): (...args: any[]) => any;
+    timer<T extends Function>(func: T, stat: string | string[], value: number, sampleRate?: number, tags?: Tags, callback?: StatsCb): T;
+    timer<T extends Function>(func: T, stat: string | string[], value: number, tags?: Tags, callback?: StatsCb): T;
+    timer<T extends Function>(func: T, stat: string | string[], value: number, callback?: StatsCb): T;
+    timer<T extends Function>(func: T, stat: string | string[], value: number, sampleRate?: number, callback?: StatsCb): T;
 
     histogram(stat: string | string[], value: number, sampleRate?: number, tags?: Tags, callback?: StatsCb): void;
     histogram(stat: string | string[], value: number, tags?: Tags, callback?: StatsCb): void;
