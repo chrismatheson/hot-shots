@@ -119,14 +119,35 @@ module.exports = function runTimerTestSuite() {
       assert.ok(timeFromStatLine >= 100);
       assert.ok(timeFromStatLine < 120);
     });
+
+    it('should record "user time" of promise', function () {
+      /* globals Promise */
+      var statsd = new StatsD({mock:true});
+
+      var onehundredMsFunc = function () { return delay(100); };
+
+      var instrumented = statsd.asyncTimer(onehundredMsFunc, 'name-thingy');
+
+      return instrumented().then(function() {
+
+        var stat = statsd.mockBuffer[0];
+        var name = stat.split(/:|\|/)[0];
+        var time = stat.split(/:|\|/)[1];
+
+        assert.equal(name, 'name-thingy');
+        assert.ok(parseFloat(time) >= 100);
+        assert.ok(parseFloat(time) < 110);
+      });
+    });
   });
-
-
 };
 
 
-
-
+function delay(n) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(resolve, n);
+  });
+}
 
 function sleep(ms) {
   return function () { execSync('sleep ' + (ms / 1000) ); };
